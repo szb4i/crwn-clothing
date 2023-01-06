@@ -1,19 +1,30 @@
-import { CATEGORIES_ACTION_TYPES } from './category.types';
+import { CATEGORIES_ACTION_TYPES } from "./category.types";
 
 export const CATEGORIES_INITIAL_STATE = {
-  categories: [],
+	categories: [],
+	isLoading: false,
+	error: null,
 };
 
 export const categoriesReducer = (
-  state = CATEGORIES_INITIAL_STATE,
-  action = {}
+	state = CATEGORIES_INITIAL_STATE,
+	action = {}
 ) => {
-  const { type, payload } = action;
+	const { type, payload } = action;
 
-  switch (type) {
-    case CATEGORIES_ACTION_TYPES.SET_CATEGORIES:
-      return { ...state, categories: payload };
-    default:
-      return state;
-  }
+	switch (type) {
+		case CATEGORIES_ACTION_TYPES.FETCH_CATEGORIES_START:
+			return {
+				...state,
+				isLoading: true,
+				error: CATEGORIES_INITIAL_STATE.error,
+				categories: CATEGORIES_INITIAL_STATE.categories,
+			};
+		case CATEGORIES_ACTION_TYPES.FETCH_CATEGORIES_SUCCESS:
+			return { ...state, categories: payload, isLoading: false };
+		case CATEGORIES_ACTION_TYPES.FETCH_CATEGORIES_FAILED:
+			return { ...state, error: payload, isLoading: false };
+		default:
+			return state;
+	}
 };
